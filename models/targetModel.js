@@ -22,6 +22,12 @@ const targetSchema = new mongoose.Schema({
     type: Date,
     default: Date.now, // Automatically set the date when the target is added
   },
+  scan_status: {
+    type: String,
+    default: 'not scanned', // Default value
+    enum: ['not scanned', 'scanning', 'completed', 'failed'], // Optional: Restrict possible values
+  },
+
 });
 
 // Create the Target model
