@@ -4,10 +4,7 @@ const User = require('../models/userModel'); // Import the User model
 // Add or update a target and associate it with the user
 const addOrUpdateTarget = async (req, res) => {
   const { name, url, description, userId } = req.body;
-
-
-
-
+  
   if (!name || !url || !description || !userId) {
     return res.status(400).json({ message: 'All fields are required.' });
   }
@@ -18,17 +15,18 @@ const addOrUpdateTarget = async (req, res) => {
       url,
       description,
       userId,
+      
     });
 
     // Save the target
     await newTarget.save();
 
-    console.log(newTarget._id);
+    //console.log(newTarget._id);
   
     // Step 2: Find user by userId
     let user = await User.findOne({ userId });
 
-    console.log(user);
+    //console.log(user);
   
     if (user) {
       // If user exists, update target list
@@ -48,6 +46,7 @@ const addOrUpdateTarget = async (req, res) => {
       message: 'Target added and associated with user successfully.',
       target: newTarget,
     });
+   
   } catch (error) {
     console.error('Error adding or updating target:', error);
     res.status(500).json({
@@ -125,4 +124,39 @@ const deleteTarget = async (req, res) => {
 };
 
 
-module.exports = { addOrUpdateTarget, getUserTargets, deleteTarget };
+// Update scan_status of a target
+const updateScanStatus = async (req, res) => {
+  const { targetId, scan_status } = req.body; // Get targetId and new scan_status from request body
+
+  if (!targetId || !scan_status) {
+    return res.status(400).json({ message: 'Target ID and scan status are required.' });
+  }
+
+  try {
+    const updatedTarget = await Target.findByIdAndUpdate(
+      targetId,
+      { scan_status },
+      { new: true } // Return the updated document
+    );
+
+    if (!updatedTarget) {
+      return res.status(404).json({ message: 'Target not found.' });
+    }
+
+    res.status(200).json({
+      message: 'Scan status updated successfully.',
+      target: updatedTarget,
+    });
+  } catch (error) {
+    console.error('Error updating scan status:', error);
+    res.status(500).json({
+      message: 'An error occurred while updating scan status.',
+      error: error.message,
+    });
+  }
+};
+
+
+
+
+module.exports = { addOrUpdateTarget, getUserTargets, deleteTarget, updateScanStatus };
