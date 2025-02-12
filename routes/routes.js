@@ -7,4 +7,7 @@ router.post('/targets', addOrUpdateTarget);
 router.post('/user/targets', getUserTargets);
 // DELETE route to delete a target and remove it from the user's target list
 router.delete('/targets', deleteTarget);
+//To get the user's Target
+router.get('/user/targets', getUserTargets);
+
 module.exports = router;

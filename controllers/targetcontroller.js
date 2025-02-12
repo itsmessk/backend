@@ -5,7 +5,13 @@ const User = require('../models/userModel'); // Import the User model
 const addOrUpdateTarget = async (req, res) => {
   const { name, url, description, userId } = req.body;
 
-  try {
+
+
+
+  if (!name || !url || !description || !userId) {
+    return res.status(400).json({ message: 'All fields are required.' });
+  }
+  try { 
     // Step 1: Create a new target
     const newTarget = new Target({
       name,
@@ -17,9 +23,13 @@ const addOrUpdateTarget = async (req, res) => {
     // Save the target
     await newTarget.save();
 
+    console.log(newTarget._id);
+  
     // Step 2: Find user by userId
     let user = await User.findOne({ userId });
 
+    console.log(user);
+  
     if (user) {
       // If user exists, update target list
       user.targetIds.push(newTarget._id); // Add the new target ID
@@ -47,9 +57,10 @@ const addOrUpdateTarget = async (req, res) => {
   }
 };
 
+
 // Get all targets for a given userId
 const getUserTargets = async (req, res) => {
-  const { userId } = req.body;
+  const { userId } = req.query; 
 
   try {
     // Find user by userId and populate the targetIds
