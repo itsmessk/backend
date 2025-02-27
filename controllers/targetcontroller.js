@@ -15,17 +15,18 @@ const addOrUpdateTarget = async (req, res) => {
       url,
       description,
       userId,
+      
     });
 
     // Save the target
     await newTarget.save();
 
-    console.log(newTarget._id);
+    //console.log(newTarget._id);
   
     // Step 2: Find user by userId
     let user = await User.findOne({ userId });
 
-    console.log(user);
+    //console.log(user);
   
     if (user) {
       // If user exists, update target list
@@ -45,6 +46,7 @@ const addOrUpdateTarget = async (req, res) => {
       message: 'Target added and associated with user successfully.',
       target: newTarget,
     });
+   
   } catch (error) {
     console.error('Error adding or updating target:', error);
     res.status(500).json({
