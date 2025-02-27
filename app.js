@@ -5,7 +5,7 @@ const routes = require('./routes/routes');
 const cookieParser = require('cookie-parser');
 
 const corsOptions = {
-    origin: 'http://localhost:3000', // Replace with the frontend's URL
+    origin: '*', // Replace with the frontend's URL
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
     credentials: true, // Allow cookies
 };
